@@ -12,6 +12,7 @@ class GameScene: SKScene {
     
     var ball = SKShapeNode()
     var paddle = SKSpriteNode()
+    var brick = SKSpriteNode()
     override func didMove(to view: SKView) {
         createBackground()
         resetGame()
@@ -30,6 +31,17 @@ class GameScene: SKScene {
             let moveForever = SKAction.repeatForever(moveLoop)
             starsBackground.run(moveForever)
         }
+    }
+    func makeBrick() {
+        brick.removeFromParent()
+        // remove the brick, if it exists
+        brick = SKSpriteNode(color: .blue,
+                             size: CGSize(width: 50, height: 20))
+        brick.position = CGPoint(x: frame.midX, y: frame.maxY - 50)
+        brick.name = "brick"
+        brick.physicsBody = SKPhysicsBody(rectangleOf: brick.size)
+        brick.physicsBody?.isDynamic = false
+        addChild(brick)
     }
     func makePaddle() {
         
@@ -99,6 +111,7 @@ class GameScene: SKScene {
         //this stuff happens before each gaeme strarts
         makeBall()
         makePaddle()
+        makeBrick()
     }
 }
 
