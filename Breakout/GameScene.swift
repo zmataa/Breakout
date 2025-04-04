@@ -259,6 +259,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             playLabel.text = "You lose! Tap to play again"
         }
     }
-
+    override func update(_ currentTime: TimeInterval) {
+        if abs(ball.physicsBody!.velocity.dx) < 100 {
+            ball.physicsBody? .applyImpulse(CGVector(dx: Int.random(in: -3...3), dy: 0))
+        }
+        if abs(ball.physicsBody!.velocity.dy) < 100 {
+            ball.physicsBody? .applyImpulse(CGVector(dx: 0, dy: Int.random(in: -3...3)))
+        }
+        
+    }
 
 }
