@@ -162,7 +162,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     }
     func updateLabels() {
         scoreLabel.text = "Score: \(score)"
-        scoreLabel.text = "Lives: \(lives)"
+        livesLabel.text = "Lives: \(lives)"
     }
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         for touch in touches {
@@ -220,12 +220,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
 
         if contact.bodyA.node?.name == "loseZone" ||
            contact.bodyB.node?.name == "loseZone" {
-            lives -= 1
-            if lives > 0 {
+            ball.physicsBody?.isDynamic = false
+            ball.removeFromParent()
+            if lives == 3{
+                lives = 2
                 score = 0
                 resetGame()
                 kickBall()
-            } else {
+            }
+            else if lives == 2 {
+                lives = 1
+                score = 0
+                resetGame()
+                kickBall()
+            }
+            else if lives == 1 {
                 gameOver(winner: false)
             }
         }
@@ -240,18 +249,23 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         playLabel.name = "playLabel"
         addChild(playLabel)
 
-        livesLabel.fontSize = 18
-        livesLabel.fontColor = .black
-        livesLabel.fontName = "Arial"
-        livesLabel.position = CGPoint(x: frame.minX + 50, y: frame.minY + 18)
-        addChild(livesLabel)
-
+        // Score: bottom-left
         scoreLabel.fontSize = 18
-        scoreLabel.fontColor = .black
+        scoreLabel.fontColor = .white
         scoreLabel.fontName = "Arial"
-        scoreLabel.position = CGPoint(x: frame.maxX - 50, y: frame.minY + 18)
+        scoreLabel.horizontalAlignmentMode = .left
+        scoreLabel.position = CGPoint(x: frame.minX + 20, y: frame.minY + 20)
         addChild(scoreLabel)
+
+        // Lives: bottom-right
+        livesLabel.fontSize = 18
+        livesLabel.fontColor = .white
+        livesLabel.fontName = "Arial"
+        livesLabel.horizontalAlignmentMode = .right
+        livesLabel.position = CGPoint(x: frame.maxX - 20, y: frame.minY + 20)
+        addChild(livesLabel)
     }
+
     func gameOver(winner: Bool) {
         playingGame = false
         playLabel.alpha = 1
